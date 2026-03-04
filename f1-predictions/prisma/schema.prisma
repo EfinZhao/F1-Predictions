@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String?
+  password       String
+  favoriteTeam   String?
+  favoriteDriver String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  predictions Prediction[]
+}
+
+model Prediction {
+  id       String @id @default(cuid())
+  userId   String
+  raceName String
+
+  // Top 5 drivers - position 1-5
+  driver1 String?
+  driver2 String?
+  driver3 String?
+  driver4 String?
+  driver5 String?
+
+  // Pole position
+  pole String?
+
+  // Top 3 teams
+  team1 String?
+  team2 String?
+  team3 String?
+
+  // Fastest lap
+  fastestLap String?
+
+  // Calculated points after race
+  points Int?
+
+  // Score breakdown (JSON stored as string)
+  scoreBreakdown String?
+
+  locked    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, raceName])
+}
+
+model RaceResult {
+  id       String @id @default(cuid())
+  raceName String @unique
+
+  // Actual top 5 finishers
+  driver1 String?
+  driver2 String?
+  driver3 String?
+  driver4 String?
+  driver5 String?
+
+  // Actual pole sitter
+  pole String?
+
+  // Actual top 3 teams
+  team1 String?
+  team2 String?
+  team3 String?
+
+  // Actual fastest lap driver
+  fastestLap String?
+
+  scoringDone Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
