@@ -15,13 +15,15 @@ export const F1_DRIVERS_2026 = [
   "Nico Hulkenberg",
   "Kevin Magnussen",
   "Pierre Gasly",
-  "Jack Doohan",
+  "Franco Colapinto",
   "Carlos Sainz",
   "Alexander Albon",
   "Esteban Ocon",
   "Oliver Bearman",
-  "Yuki Tsunoda",
+  "Arvid Lindblad",
   "Isack Hadjar",
+  "Valtteri Bottas",
+  "Sergio Perez",
 ];
 
 export const F1_TEAMS_2026 = [
@@ -35,4 +37,5 @@ export const F1_TEAMS_2026 = [
   "Williams",
   "Sauber",
   "Racing Bulls",
+  "Cadillac",
 ];
