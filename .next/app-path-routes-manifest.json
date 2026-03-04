@@ -1,0 +1,15 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/leaderboard/route": "/api/leaderboard",
+  "/api/predictions/route": "/api/predictions",
+  "/api/race-results/route": "/api/race-results",
+  "/api/register/route": "/api/register",
+  "/api/scoring/route": "/api/scoring",
+  "/api/user/profile/route": "/api/user/profile",
+  "/favicon.ico/route": "/favicon.ico",
+  "/login/page": "/login",
+  "/page": "/",
+  "/profile/page": "/profile"
+}

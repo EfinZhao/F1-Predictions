@@ -1,0 +1,10 @@
+var R=require("../../../chunks/[turbopack]_runtime.js")("server/app/api/predictions/route.js")
+R.c("server/chunks/[externals]__e1f0a56f._.js")
+R.c("server/chunks/b2b3e_next_05e9f02f._.js")
+R.c("server/chunks/691c0_@auth_core_843d8dff._.js")
+R.c("server/chunks/407f6_jose_dist_webapi_29844b7f._.js")
+R.c("server/chunks/[root-of-the-server]__c60642c4._.js")
+R.c("server/chunks/[root-of-the-server]__b519d404._.js")
+R.c("server/chunks/_next-internal_server_app_api_predictions_route_actions_345d772e.js")
+R.m("[project]/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/predictions/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/predictions/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

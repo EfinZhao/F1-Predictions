@@ -1,0 +1,10 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/user/profile/route.js")
+R.c("server/chunks/[externals]__0a204359._.js")
+R.c("server/chunks/b2b3e_next_b6038514._.js")
+R.c("server/chunks/691c0_@auth_core_843d8dff._.js")
+R.c("server/chunks/407f6_jose_dist_webapi_29844b7f._.js")
+R.c("server/chunks/[root-of-the-server]__c60642c4._.js")
+R.c("server/chunks/[root-of-the-server]__2c10f166._.js")
+R.c("server/chunks/_next-internal_server_app_api_user_profile_route_actions_3aeda26f.js")
+R.m("[project]/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/user/profile/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/.pnpm/next@16.1.6_@babel+core@7.29.0_react-dom@19.2.3_react@19.2.3__react@19.2.3/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/app/api/user/profile/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports
