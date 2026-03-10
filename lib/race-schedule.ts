@@ -2,11 +2,15 @@ import raceSchedule from "@/2026_race_schedule.json";
 
 export type RaceSession = {
   "practice 1": string;
-  "practice 2": string;
-  "practice 3": string;
+  "practice 2"?: string;
+  "practice 3"?: string;
+  "Sprint Qualifying"?: string;
+  Sprint?: string;
+  SprintEnd?: string;
   Qualifying: string;
   Race: string;
   RaceEnd: string;
+  hasSprint?: boolean;
 };
 
 export type RaceEntry = {
@@ -31,8 +35,10 @@ export function getNextSession(): {
   for (const race of allRaces) {
     const sessions: [string, string][] = [
       ["practice 1", race.schedule["practice 1"]],
-      ["practice 2", race.schedule["practice 2"]],
-      ["practice 3", race.schedule["practice 3"]],
+      ...(race.schedule["Sprint Qualifying"] ? [["Sprint Qualifying", race.schedule["Sprint Qualifying"]] as [string, string]] : []),
+      ...(race.schedule.Sprint ? [["Sprint", race.schedule.Sprint] as [string, string]] : []),
+      ...(race.schedule["practice 2"] ? [["practice 2", race.schedule["practice 2"]] as [string, string]] : []),
+      ...(race.schedule["practice 3"] ? [["practice 3", race.schedule["practice 3"]] as [string, string]] : []),
       ["Qualifying", race.schedule.Qualifying],
       ["Race", race.schedule.Race],
     ];

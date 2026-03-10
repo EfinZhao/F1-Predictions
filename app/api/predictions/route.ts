@@ -5,11 +5,15 @@ import raceSchedule from "@/2026_race_schedule.json";
 
 type RaceScheduleEntry = {
   "practice 1": string;
-  "practice 2": string;
-  "practice 3": string;
+  "practice 2"?: string;
+  "practice 3"?: string;
+  "Sprint Qualifying"?: string;
+  Sprint?: string;
+  SprintEnd?: string;
   Qualifying: string;
   Race: string;
   RaceEnd: string;
+  hasSprint?: boolean;
 };
 
 function getCurrentRace(): { name: string; schedule: RaceScheduleEntry } | null {
@@ -94,7 +98,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { raceName, driver1, driver2, driver3, driver4, driver5, pole, team1, team2, team3, fastestLap } = body;
+    const { raceName, driver1, driver2, driver3, driver4, driver5, pole, team1, team2, team3, fastestLap, sprintPole, sprintPodium1, sprintPodium2, sprintPodium3 } = body;
 
     if (!raceName) {
       return NextResponse.json({ error: "Race name required" }, { status: 400 });
@@ -132,6 +136,10 @@ export async function POST(req: NextRequest) {
         team2: team2 || null,
         team3: team3 || null,
         fastestLap: fastestLap || null,
+        sprintPole: sprintPole || null,
+        sprintPodium1: sprintPodium1 || null,
+        sprintPodium2: sprintPodium2 || null,
+        sprintPodium3: sprintPodium3 || null,
       },
       create: {
         userId: session.user.id,
@@ -146,6 +154,10 @@ export async function POST(req: NextRequest) {
         team2: team2 || null,
         team3: team3 || null,
         fastestLap: fastestLap || null,
+        sprintPole: sprintPole || null,
+        sprintPodium1: sprintPodium1 || null,
+        sprintPodium2: sprintPodium2 || null,
+        sprintPodium3: sprintPodium3 || null,
       },
     });
 

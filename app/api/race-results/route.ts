@@ -45,6 +45,10 @@ export async function POST(req: NextRequest) {
       team2,
       team3,
       fastestLap,
+      sprintPole,
+      sprintPodium1,
+      sprintPodium2,
+      sprintPodium3,
     } = body;
 
     if (!raceName) {
@@ -67,6 +71,10 @@ export async function POST(req: NextRequest) {
         team2,
         team3,
         fastestLap,
+        sprintPole,
+        sprintPodium1,
+        sprintPodium2,
+        sprintPodium3,
         scoringDone: false,
       },
       create: {
@@ -81,6 +89,10 @@ export async function POST(req: NextRequest) {
         team2,
         team3,
         fastestLap,
+        sprintPole,
+        sprintPodium1,
+        sprintPodium2,
+        sprintPodium3,
       },
     });
 

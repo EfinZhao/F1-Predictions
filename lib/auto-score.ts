@@ -18,7 +18,7 @@ export type AutoScoreResult = {
  * Check all races that have ended and haven't been scored yet.
  * For each, fetch results from the Jolpica API and run scoring.
  */
-export async function runAutoScore(): Promise<AutoScoreResult> {
+export async function runAutoScore(force = false): Promise<AutoScoreResult> {
   const now = Date.now();
   const year = new Date().getFullYear();
   const result: AutoScoreResult = { scored: [], skipped: [], errors: [] };
@@ -42,7 +42,7 @@ export async function runAutoScore(): Promise<AutoScoreResult> {
       where: { raceName },
     });
 
-    if (existingResult?.scoringDone) {
+    if (existingResult?.scoringDone && !force) {
       result.skipped.push(`${raceName} (already scored)`);
       continue;
     }

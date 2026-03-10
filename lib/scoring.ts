@@ -9,6 +9,10 @@ export type ScoreBreakdown = {
   team2Points: number;
   team3Points: number;
   fastestLapPoints: number;
+  sprintPolePoints: number;
+  sprintPodium1Points: number;
+  sprintPodium2Points: number;
+  sprintPodium3Points: number;
   total: number;
   exactCount: number;
   totalPredictions: number;
@@ -26,6 +30,10 @@ export function calculateScore(
     team2?: string | null;
     team3?: string | null;
     fastestLap?: string | null;
+    sprintPole?: string | null;
+    sprintPodium1?: string | null;
+    sprintPodium2?: string | null;
+    sprintPodium3?: string | null;
   },
   result: {
     driver1?: string | null;
@@ -38,6 +46,10 @@ export function calculateScore(
     team2?: string | null;
     team3?: string | null;
     fastestLap?: string | null;
+    sprintPole?: string | null;
+    sprintPodium1?: string | null;
+    sprintPodium2?: string | null;
+    sprintPodium3?: string | null;
   }
 ): ScoreBreakdown {
   const predDrivers = [
@@ -132,11 +144,46 @@ export function calculateScore(
     }
   }
 
+  // Sprint pole - 1 point for exact
+  let sprintPolePoints = 0;
+  if (prediction.sprintPole && result.sprintPole) {
+    totalPredictions++;
+    if (prediction.sprintPole === result.sprintPole) {
+      sprintPolePoints = 1;
+      exactCount++;
+    }
+  }
+
+  // Sprint podium - 1 point per exact position
+  const predSprintPodium = [prediction.sprintPodium1, prediction.sprintPodium2, prediction.sprintPodium3];
+  const actSprintPodium = [result.sprintPodium1, result.sprintPodium2, result.sprintPodium3];
+  const sprintPodiumPoints: number[] = [];
+
+  for (let i = 0; i < 3; i++) {
+    const pred = predSprintPodium[i];
+    const actual = actSprintPodium[i];
+
+    if (!pred || !actual) {
+      sprintPodiumPoints.push(0);
+      continue;
+    }
+
+    totalPredictions++;
+    if (pred === actual) {
+      sprintPodiumPoints.push(1);
+      exactCount++;
+    } else {
+      sprintPodiumPoints.push(0);
+    }
+  }
+
   const total =
     driverPoints.reduce((s, p) => s + p, 0) +
     polePoints +
     teamPoints.reduce((s, p) => s + p, 0) +
-    fastestLapPoints;
+    fastestLapPoints +
+    sprintPolePoints +
+    sprintPodiumPoints.reduce((s, p) => s + p, 0);
 
   return {
     driver1Points: driverPoints[0],
@@ -149,6 +196,10 @@ export function calculateScore(
     team2Points: teamPoints[1],
     team3Points: teamPoints[2],
     fastestLapPoints,
+    sprintPolePoints,
+    sprintPodium1Points: sprintPodiumPoints[0],
+    sprintPodium2Points: sprintPodiumPoints[1],
+    sprintPodium3Points: sprintPodiumPoints[2],
     total,
     exactCount,
     totalPredictions,

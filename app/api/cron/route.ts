@@ -18,8 +18,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    console.log("[cron] Auto-score triggered");
-    const result = await runAutoScore();
+    const force = req.nextUrl.searchParams.get("force") === "true";
+    console.log("[cron] Auto-score triggered", force ? "(forced)" : "");
+    const result = await runAutoScore(force);
     console.log("[cron] Auto-score complete:", result);
 
     return NextResponse.json({

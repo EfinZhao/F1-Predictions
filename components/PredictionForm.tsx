@@ -16,6 +16,10 @@ type Prediction = {
   team2?: string | null;
   team3?: string | null;
   fastestLap?: string | null;
+  sprintPole?: string | null;
+  sprintPodium1?: string | null;
+  sprintPodium2?: string | null;
+  sprintPodium3?: string | null;
 };
 
 type FormState = {
@@ -29,6 +33,10 @@ type FormState = {
   team2: string;
   team3: string;
   fastestLap: string;
+  sprintPole: string;
+  sprintPodium1: string;
+  sprintPodium2: string;
+  sprintPodium3: string;
 };
 
 type RaceInfo = {
@@ -37,6 +45,7 @@ type RaceInfo = {
     "practice 1": string;
     Race: string;
     RaceEnd: string;
+    hasSprint?: boolean;
   };
   prediction: Prediction | null;
   isLocked: boolean;
@@ -161,6 +170,10 @@ export default function PredictionForm() {
     team2: "",
     team3: "",
     fastestLap: "",
+    sprintPole: "",
+    sprintPodium1: "",
+    sprintPodium2: "",
+    sprintPodium3: "",
   });
 
   const fetchRaceInfo = useCallback(async () => {
@@ -185,6 +198,10 @@ export default function PredictionForm() {
           team2: data.prediction.team2 || "",
           team3: data.prediction.team3 || "",
           fastestLap: data.prediction.fastestLap || "",
+          sprintPole: data.prediction.sprintPole || "",
+          sprintPodium1: data.prediction.sprintPodium1 || "",
+          sprintPodium2: data.prediction.sprintPodium2 || "",
+          sprintPodium3: data.prediction.sprintPodium3 || "",
         });
       }
     } catch {
@@ -233,7 +250,17 @@ export default function PredictionForm() {
       const res = await fetch("/api/predictions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ raceName: raceInfo.raceName, ...form }),
+        body: JSON.stringify({
+          raceName: raceInfo.raceName,
+          ...form,
+          // Only include sprint fields if this is a sprint race
+          ...(raceInfo.schedule.hasSprint ? {} : {
+            sprintPole: undefined,
+            sprintPodium1: undefined,
+            sprintPodium2: undefined,
+            sprintPodium3: undefined,
+          }),
+        }),
       });
 
       if (!res.ok) {
@@ -409,6 +436,77 @@ export default function PredictionForm() {
           </div>
         </div>
 
+        {/* Sprint Predictions (sprint weekends only) */}
+        {raceInfo.schedule.hasSprint && (
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="text-sm font-bold uppercase tracking-wider" style={{ color: "#F97316" }}>
+                Sprint Race
+              </h3>
+              <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: "#7C2D12", color: "#FDBA74" }}>
+                Sprint Weekend
+              </span>
+            </div>
+            <div className="space-y-3">
+              {/* Sprint Pole */}
+              <div className="flex items-center gap-3">
+                <div
+                  className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white"
+                  style={{ background: "#F97316" }}
+                >
+                  P
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs font-medium mb-1" style={{ color: "var(--muted)" }}>
+                    Sprint Pole (1pt exact)
+                  </label>
+                  <select
+                    value={form.sprintPole}
+                    onChange={(e) => setForm({ ...form, sprintPole: e.target.value })}
+                    disabled={isLocked}
+                    className="w-full px-3 py-2 rounded-lg text-sm outline-none transition-all disabled:opacity-50"
+                    style={{
+                      background: "var(--surface)",
+                      color: "var(--foreground)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
+                    <option value="">Select pole sitter...</option>
+                    {F1_DRIVERS_2026.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {/* Sprint Podium */}
+              <DriverSelect
+                label="Sprint P1 (1pt exact)"
+                value={form.sprintPodium1}
+                onChange={(v) => setForm({ ...form, sprintPodium1: v })}
+                disabled={isLocked}
+                exclude={[form.sprintPodium2, form.sprintPodium3].filter(Boolean) as string[]}
+                position={1}
+              />
+              <DriverSelect
+                label="Sprint P2 (1pt exact)"
+                value={form.sprintPodium2}
+                onChange={(v) => setForm({ ...form, sprintPodium2: v })}
+                disabled={isLocked}
+                exclude={[form.sprintPodium1, form.sprintPodium3].filter(Boolean) as string[]}
+                position={2}
+              />
+              <DriverSelect
+                label="Sprint P3 (1pt exact)"
+                value={form.sprintPodium3}
+                onChange={(v) => setForm({ ...form, sprintPodium3: v })}
+                disabled={isLocked}
+                exclude={[form.sprintPodium1, form.sprintPodium2].filter(Boolean) as string[]}
+                position={3}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Fastest Lap */}
         <div>
           <h3 className="text-sm font-bold mb-3 uppercase tracking-wider" style={{ color: "var(--f1-red)" }}>
@@ -482,6 +580,14 @@ export default function PredictionForm() {
           <p>• Top 3 teams: <span className="font-medium text-green-600">1pt</span> per exact position</p>
           <p>• Fastest lap: <span className="font-medium text-green-600">1pt</span> exact</p>
           <p className="font-semibold mt-2">Max: 16 points per race</p>
+          {raceInfo.schedule.hasSprint && (
+            <>
+              <p className="font-semibold mt-3" style={{ color: "var(--foreground)" }}>Sprint Scoring:</p>
+              <p>• Sprint pole: <span className="font-medium text-green-600">1pt</span> exact</p>
+              <p>• Sprint podium: <span className="font-medium text-green-600">1pt</span> per exact position</p>
+              <p className="font-semibold mt-1">+4 sprint points available</p>
+            </>
+          )}
         </div>
       </form>
     </div>

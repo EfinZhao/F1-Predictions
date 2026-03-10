@@ -46,6 +46,12 @@ model Prediction {
   // Fastest lap
   fastestLap String?
 
+  // Sprint predictions (only for sprint race weekends)
+  sprintPole     String?
+  sprintPodium1  String?
+  sprintPodium2  String?
+  sprintPodium3  String?
+
   // Calculated points after race
   points Int?
 
@@ -82,6 +88,12 @@ model RaceResult {
 
   // Actual fastest lap driver
   fastestLap String?
+
+  // Sprint results (only for sprint race weekends)
+  sprintPole     String?
+  sprintPodium1  String?
+  sprintPodium2  String?
+  sprintPodium3  String?
 
   scoringDone Boolean  @default(false)
   createdAt   DateTime @default(now())
